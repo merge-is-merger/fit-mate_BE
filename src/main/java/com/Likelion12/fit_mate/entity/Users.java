@@ -1,4 +1,4 @@
-package com.Likelion12.fit_mate.models;
+package com.Likelion12.fit_mate.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
