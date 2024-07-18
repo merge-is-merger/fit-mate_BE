@@ -29,20 +29,20 @@ public class Users {
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;  // 사용자 닉네임
 
-    @Column(name = "birthdate", nullable = false)
+    @Column(name = "profileImage", length = 255)
+    private String profileImage;  // 사용자 프로필 이미지 경로 혹은 URL
+
+    @Column(name = "birthdate", nullable = true)
     private LocalDate birthdate;  // 사용자 생년월일
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false, length = 10)
+    @Column(name = "gender", length = 10)
     private Gender gender;  // 사용자 성별, Enum 타입으로 정의
 
     @Column(name = "email", length = 100)
     private String email;  // 사용자 이메일 주소
 
-    @Column(name = "profileImage", length = 255)
-    private String profileImage;  // 사용자 프로필 이미지 경로 혹은 URL
-
-    @Column(name = "registrationDate", nullable = false)
+    @Column(name = "registrationDate", nullable = true)
     private LocalDateTime registrationDate;  // 사용자 가입 일자
 
     @Column(name = "lastLogin")

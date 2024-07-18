@@ -35,7 +35,7 @@ public class AuthService {
     private String region;
 
     public void register(RegisterRequest request) throws IOException {
-        if (usersRepository.findByUsername(request.getUserId()) != null) {
+        if (usersRepository.findByUsername(request.getUsername()) != null) {
             throw new RuntimeException("ID already exists");
         }
 
@@ -48,11 +48,11 @@ public class AuthService {
         }
 
         Users user = new Users();
-        user.setUsername(request.getUserId());
+        user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setNickname(request.getNickname());
         user.setRegistrationDate(LocalDateTime.now());
-        user.setProfileImage("https://your-default-profile-image-url.com/default_profile.png");
+        user.setProfileImage("https://fastly.picsum.photos/id/65/4912/3264.jpg?hmac=uq0IxYtPIqRKinGruj45KcPPzxDjQvErcxyS1tn7bG0");
 
         if (request.getProfileImage() != null && !request.getProfileImage().isEmpty()) {
             String imageUrl = uploadFile(request.getProfileImage());
@@ -63,7 +63,7 @@ public class AuthService {
     }
 
     public Users login(LoginRequest request) {
-        Users user = usersRepository.findByUsername(request.getUserId());
+        Users user = usersRepository.findByUsername(request.getUsername());
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             user.setLastLogin(LocalDateTime.now());
             usersRepository.save(user); // Update last login time

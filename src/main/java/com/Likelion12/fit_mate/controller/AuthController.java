@@ -21,6 +21,15 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@ModelAttribute RegisterRequest request) {
         try {
+            System.out.println("Username: " + request.getUsername());
+            System.out.println("Password: " + request.getPassword());
+            System.out.println("Confirm Password: " + request.getConfirmPassword());
+            System.out.println("Nickname: " + request.getNickname());
+            if (request.getProfileImage() != null) {
+                System.out.println("Profile Image: " + request.getProfileImage().getOriginalFilename());
+            } else {
+                System.out.println("Profile Image is null");
+            }
             authService.register(request);
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
