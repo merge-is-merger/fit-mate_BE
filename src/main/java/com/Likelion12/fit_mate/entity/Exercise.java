@@ -21,5 +21,10 @@ public class Exercise {
     @JoinColumn(name = "category_id")
     private ExerciseCategories category;
 
-    // Getters and setters
+    public Exercise(String name, String description, ExerciseCategories category) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+    }
+
 }
