@@ -14,5 +14,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Users findByNickname(String nickname);
 
     // 이메일(email)으로 사용자를 찾는 메서드
-    Users findByEmail(String email);
+    //Users findByEmail(String email);
 }

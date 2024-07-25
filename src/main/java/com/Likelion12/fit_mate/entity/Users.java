@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -48,9 +49,9 @@ public class Users {
     @Column(name = "lastLogin")
     private LocalDateTime lastLogin;  // 사용자 마지막 로그인 일시
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Routines> routines = new ArrayList<>();  // 사용자가 가지는 루틴 목록
-//
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ExerciseRoutines> routines;
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<UserChallenges> userChallenges = new ArrayList<>();  // 사용자가 참여하는 챌린지 목록
 
