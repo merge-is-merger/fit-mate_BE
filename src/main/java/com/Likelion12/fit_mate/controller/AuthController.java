@@ -4,6 +4,8 @@ import com.Likelion12.fit_mate.dto.request.LoginRequest;
 import com.Likelion12.fit_mate.dto.request.RegisterRequest;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,12 +41,24 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<Users> loginUser(@RequestBody LoginRequest request) {
+    public ResponseEntity<Users> loginUser(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         try {
             Users user = authService.login(request);
+            HttpSession session = httpServletRequest.getSession();
+            session.setAttribute("user", user); // 세션에 사용자 정보 저장
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.status(401).body(null);
         }
+    }
+
+    // 로그아웃 엔드포인트
+    @PostMapping("/logout")
+    public ResponseEntity<String> logoutUser(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession(false);
+        if (session != null) {
+            session.invalidate(); // 세션 무효화
+        }
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
