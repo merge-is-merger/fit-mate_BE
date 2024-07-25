@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18a2ce12-e3dd-4634-99cb-5559dea959a6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/9b840086-c5a4-4555-8bcd-c73f8c6997dc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/9b840086-c5a4-4555-8bcd-c73f8c6997dc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/Likelion12/fit_mate/service/AuthService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/Likelion12/fit_mate/service/AuthService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +75,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.Build fit-mate_BE.executor": "Run",
     "Gradle.fit-mate_BE 빌드.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -76,8 +85,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.FitMateApplication.executor": "Run",
-    "git-widget-placeholder": "login",
+    "git-widget-placeholder": "challenge",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/downjuhyun/Desktop/fit-mate_BE",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -99,7 +109,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-53826d6a" />
       </set>
     </attachedChunks>
   </component>
@@ -113,6 +123,7 @@
       <updated>1721118331785</updated>
       <workItem from="1721118343208" duration="12434000" />
       <workItem from="1721282335338" duration="9242000" />
+      <workItem from="1721891903717" duration="10930000" />
     </task>
     <servers />
   </component>

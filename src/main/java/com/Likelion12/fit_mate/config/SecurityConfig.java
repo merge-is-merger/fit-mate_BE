@@ -20,12 +20,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                .requestMatchers("api/auth/register", "/api/auth/login", "/api/auth/**").permitAll())
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/challenge").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                        .loginProcessingUrl("/api/auth/login")
+                        .defaultSuccessUrl("/api/challenge", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .permitAll()
+                )
                 .getOrBuild();
     }
-
 }
