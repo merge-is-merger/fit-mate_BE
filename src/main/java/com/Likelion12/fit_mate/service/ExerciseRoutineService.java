@@ -12,6 +12,7 @@ import com.Likelion12.fit_mate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,13 +46,14 @@ public class ExerciseRoutineService {
         routine.setUser(user);
 
         // 운동 ID 리스트를 기반으로 운동 조회 및 설정
-        List<Exercise> exercises = request.getExerciseIds().stream()
+        LinkedHashSet<Exercise> exercises = request.getExerciseIds().stream()
                 .map(id -> exerciseRepository.findById(id).orElseThrow(() -> new RuntimeException("Exercise not found")))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new)); // LinkedHashSet 사용
 
-        routine.setExercises(exercises.stream().collect(Collectors.toSet()));
+        routine.setExercises(exercises);
         // 운동 루틴 저장
         ExerciseRoutines savedRoutine = routineRepository.save(routine);
+
 
         // 저장된 루틴을 DTO로 변환하여 반환
         return toDto(savedRoutine);
