@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18a2ce12-e3dd-4634-99cb-5559dea959a6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/ChallengeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/ChallengeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/dto/response/ChallengeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/dto/response/ChallengeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/entity/Challenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/entity/Challenge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/repository/ChallengeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/repository/ChallengeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/service/ChallengeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/service/ChallengeService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -118,7 +120,7 @@
       <workItem from="1721118343208" duration="12434000" />
       <workItem from="1721282335338" duration="9242000" />
       <workItem from="1721891903717" duration="11180000" />
-      <workItem from="1721970712492" duration="1478000" />
+      <workItem from="1721970712492" duration="3556000" />
     </task>
     <servers />
   </component>

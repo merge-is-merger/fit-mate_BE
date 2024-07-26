@@ -18,12 +18,12 @@ public class Challenge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
-    private boolean completed;
+    private String title; // 챌린지 제목
+    private String description; // 챌린지 설명
+    private LocalDate date; // 챌린지 완수 날짜
+    private boolean completed; // 챌린지 성공 여부
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
-
-    // Getters and Setters
 }

@@ -3,6 +3,7 @@ package com.Likelion12.fit_mate.controller;
 import com.Likelion12.fit_mate.dto.request.ChallengeUploadRequest;
 import com.Likelion12.fit_mate.dto.response.ChallengeResponse;
 import com.Likelion12.fit_mate.dto.response.ChallengeUploadResponse;
+import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class ChallengeController {
     @GetMapping("/challenge")
     public ResponseEntity<ChallengeResponse> getChallenge(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        ChallengeResponse response = challengeService.getChallengesForUser(userDetails.getUsername());
+        Users user = (Users) userDetails;
+        ChallengeResponse response = challengeService.getChallengesForUser(user);
         return ResponseEntity.ok(response);
     }
 

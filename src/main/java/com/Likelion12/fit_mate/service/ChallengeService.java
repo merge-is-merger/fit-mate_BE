@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,11 +39,10 @@ public class ChallengeService {
 
     /**
      * 특정 사용자의 챌린지 정보를 가져옵니다.
-     * @param username 사용자의 이름
+     * @param user 사용자의 객체
      * @return 사용자와 챌린지 세부 정보를 포함한 챌린지 응답
      */
-    public ChallengeResponse getChallengesForUser(String username) {
-        Users user = authService.findByUsername(username);
+    public ChallengeResponse getChallengesForUser(Users user) {
         List<Challenge> challenges = challengeRepository.findByUser(user);
 
         ChallengeResponse response = new ChallengeResponse();
@@ -57,7 +57,7 @@ public class ChallengeService {
         List<ChallengeResponse.RecordDTO> records = challenges.stream()
                 .map(challenge -> {
                     ChallengeResponse.RecordDTO recordDTO = new ChallengeResponse.RecordDTO();
-                    recordDTO.setDate(challenge.getDate());
+                    recordDTO.setDate(challenge.getDate().toString());
                     recordDTO.setCompleted(challenge.isCompleted());
                     return recordDTO;
                 })
@@ -68,6 +68,17 @@ public class ChallengeService {
         response.setChallenge(challengeDTO);
 
         return response;
+    }
+
+    /**
+     * 이번 달의 챌린지를 가져옵니다.
+     * @return 이번 달의 챌린지 리스트
+     */
+    public List<Challenge> getMonthlyChallenges() {
+        LocalDate now = LocalDate.now();
+        LocalDate startOfMonth = now.withDayOfMonth(1);
+        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
+        return challengeRepository.findByDateBetween(startOfMonth, endOfMonth);
     }
 
     /**
