@@ -66,6 +66,12 @@ public class ExerciseRoutineService {
         }
         // 사용자의 운동 루틴 조회
         List<ExerciseRoutines> routines = routineRepository.findByUser(user);
+
+        // 조회된 루틴이 없으면 빈 리스트 반환
+        if (routines.isEmpty()) {
+            return List.of();
+        }
+
         // 조회된 루틴을 DTO 리스트로 변환하여 반환
         return routines.stream().map(this::toDto).collect(Collectors.toList());
     }
