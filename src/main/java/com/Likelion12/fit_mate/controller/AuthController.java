@@ -41,12 +41,12 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<Users> loginUser(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
         try {
             Users user = authService.login(request);
             HttpSession session = httpServletRequest.getSession();
             session.setAttribute("user", user); // 세션에 사용자 정보 저장
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok("Logged in successfully");
         } catch (Exception e) {
             return ResponseEntity.status(401).body(null);
         }
