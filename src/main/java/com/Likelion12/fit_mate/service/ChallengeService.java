@@ -1,12 +1,19 @@
 package com.Likelion12.fit_mate.service;
 
+import com.Likelion12.fit_mate.dto.request.ChallengeUploadRequest;
 import com.Likelion12.fit_mate.dto.response.ChallengeResponse;
+import com.Likelion12.fit_mate.dto.response.ChallengeUploadResponse;
 import com.Likelion12.fit_mate.entity.Challenge;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.repository.ChallengeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,13 +22,25 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final AuthService authService;
+    private final Path fileStorageLocation;
 
     @Autowired
     public ChallengeService(ChallengeRepository challengeRepository, AuthService authService) {
         this.challengeRepository = challengeRepository;
         this.authService = authService;
+        this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
+        try {
+            Files.createDirectories(this.fileStorageLocation);
+        } catch (Exception ex) {
+            throw new RuntimeException("업로드된 파일이 저장될 디렉토리를 생성할 수 없습니다.", ex);
+        }
     }
 
+    /**
+     * 특정 사용자의 챌린지 정보를 가져옵니다.
+     * @param username 사용자의 이름
+     * @return 사용자와 챌린지 세부 정보를 포함한 챌린지 응답
+     */
     public ChallengeResponse getChallengesForUser(String username) {
         Users user = authService.findByUsername(username);
         List<Challenge> challenges = challengeRepository.findByUser(user);
@@ -31,7 +50,7 @@ public class ChallengeService {
         ChallengeResponse.UserDTO userDTO = new ChallengeResponse.UserDTO();
         userDTO.setName(user.getUsername());
         userDTO.setBirthdate(user.getBirthdate().toString());
-        userDTO.setGender(user.getGender().name());  // Convert enum to String
+        userDTO.setGender(user.getGender().name());  // Enum을 문자열로 변환
 
         ChallengeResponse.ChallengeDTO challengeDTO = new ChallengeResponse.ChallengeDTO();
         challengeDTO.setCount(challenges.size());
@@ -49,5 +68,33 @@ public class ChallengeService {
         response.setChallenge(challengeDTO);
 
         return response;
+    }
+
+    /**
+     * 특정 챌린지에 대한 사진을 업로드합니다.
+     * @param request 챌린지 ID와 사진 파일을 포함한 요청
+     * @return 업로드 성공 또는 실패를 나타내는 응답
+     */
+    public ChallengeUploadResponse uploadChallengePhoto(ChallengeUploadRequest request) {
+        try {
+            // 챌린지 ID 유효성 검사
+            Challenge challenge = challengeRepository.findById(request.getChallengeId())
+                    .orElseThrow(() -> new RuntimeException("챌린지를 찾을 수 없습니다."));
+
+            // 파일을 로컬에 저장 (또는 S3 등에 업로드)
+            MultipartFile photo = request.getPhoto();
+            String fileName = request.getChallengeId() + "_" + photo.getOriginalFilename();
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(photo.getInputStream(), targetLocation);
+
+            // 선택적으로, 챌린지 엔티티에 사진 URL/경로를 포함하도록 업데이트할 수 있습니다.
+            // challenge.setPhotoUrl(fileName);
+            // challengeRepository.save(challenge);
+
+            return new ChallengeUploadResponse("success", "챌린지가 성공적으로 인증되었습니다.");
+
+        } catch (IOException ex) {
+            throw new RuntimeException("파일을 저장할 수 없습니다. 다시 시도해 주세요!", ex);
+        }
     }
 }
