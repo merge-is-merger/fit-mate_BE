@@ -20,14 +20,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
+    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout","/api/routine/save", "/api/routine/my").permitAll()  // 이 엔드포인트들은 모두 접근 가능
-                        //.requestMatchers("/api/routine/save", "/api/routine/my").authenticated()
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/**").permitAll()
+                        .requestMatchers("/api/challenge","/api/routine/save", "/api/routine/my").authenticated()
+                        .anyRequest().permitAll()
+                )
+                .formLogin(form -> form
+                        .loginProcessingUrl("/api/auth/login")
+                        .defaultSuccessUrl("/api/challenge", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .permitAll()
                 )
                 .getOrBuild();
     }
-
 }

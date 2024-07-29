@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fitmate_test_db
     username: root
-    password: j2nny0620*
+    password: kjh030918!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
