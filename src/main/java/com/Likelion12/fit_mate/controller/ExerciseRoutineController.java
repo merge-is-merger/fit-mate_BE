@@ -5,6 +5,8 @@ import com.Likelion12.fit_mate.dto.response.RoutineResponse;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.repository.UsersRepository;
 import com.Likelion12.fit_mate.service.ExerciseRoutineService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,8 +50,13 @@ public class ExerciseRoutineController {
 
     // 새로운 루틴을 생성하는 엔드포인트
     @PostMapping("/save")
-    public Map<String, Object> createRoutine(@RequestBody CreateRoutineRequest request) {
-        String username = request.getUsername(); // 요청 바디에서 사용자 이름을 가져옴
+    public Map<String, Object> createRoutine(@RequestBody CreateRoutineRequest request, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            throw new RuntimeException("Unauthorized");
+        }
+        Users user = (Users) session.getAttribute("user");
+        String username = user.getUsername(); // 인증된 사용자 이름 가져오기
 
         // 새로운 루틴 생성
         RoutineResponse savedRoutine = routineService.createRoutine(username, request);

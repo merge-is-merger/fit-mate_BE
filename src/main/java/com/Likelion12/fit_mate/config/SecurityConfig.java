@@ -24,7 +24,9 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/api/auth/register","/api/auth/login", "/api/auth/logout","/api/routine/save","/api/routine/my").permitAll())
+                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/logout","/api/routine/save", "/api/routine/my").permitAll()  // 이 엔드포인트들은 모두 접근 가능
+                        //.requestMatchers("/api/routine/save", "/api/routine/my").authenticated()
+                )
                 .getOrBuild();
     }
 
