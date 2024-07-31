@@ -8,9 +8,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class AuthService implements UserDetailsService {
+public class AuthService {
 
     @Autowired
     private UsersRepository usersRepository;
@@ -70,28 +67,14 @@ public class AuthService implements UserDetailsService {
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             user.setLastLogin(LocalDateTime.now());
             usersRepository.save(user); // Update last login time
+            System.out.println("User logged in: " + user.getUsername()); // 디버깅 로그
             return user;
         } else {
+            System.out.println("Invalid username or password for: " + request.getUsername()); // 디버깅 로그
             throw new RuntimeException("Invalid username or password");
         }
     }
 
-    public Users findByUsername(String username) {
-        return usersRepository.findByUsername(username);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = usersRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles("USER")
-                .build();
-    }
 
     private String uploadFile(MultipartFile file) throws IOException {
         String key = UUID.randomUUID() + "_" + file.getOriginalFilename();

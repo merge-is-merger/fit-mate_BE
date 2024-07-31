@@ -4,7 +4,9 @@ import com.Likelion12.fit_mate.dto.request.LoginRequest;
 import com.Likelion12.fit_mate.dto.request.RegisterRequest;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.service.AuthService;
+import com.Likelion12.fit_mate.service.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,14 +43,24 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest) {
+        System.out.println("Login endpoint hit for user: " + request.getUsername()); // 메서드 진입 로그
         try {
+            System.out.println("Login attempt for user: " + request.getUsername()); // 추가 로그
             Users user = authService.login(request);
-            HttpSession session = httpServletRequest.getSession();
-            session.setAttribute("user", user); // 세션에 사용자 정보 저장
+            System.out.println("User found: " + user.getUsername()); // 추가 로그
+
+            CustomUserDetails customUserDetails = new CustomUserDetails(user);
+            System.out.println("CustomUserDetails created for user: " + customUserDetails.getUsername()); // 추가 로그
+
+            HttpSession session = httpServletRequest.getSession(true);
+            session.setAttribute("user", customUserDetails);
+            System.out.println("Session attribute set for user: " + customUserDetails.getUsername()); // 추가 로그
+
             return ResponseEntity.ok("Logged in successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(null);
+            System.out.println("Login failed for user: " + request.getUsername() + ", reason: " + e.getMessage());
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body("Invalid username or password");
         }
     }
 
