@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class ChallengeUploadRequest {
+    private Long userId;
     private Long challengeId;
     private MultipartFile photo;
 }

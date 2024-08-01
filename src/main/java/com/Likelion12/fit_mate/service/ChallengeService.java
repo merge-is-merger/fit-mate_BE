@@ -6,6 +6,7 @@ import com.Likelion12.fit_mate.dto.response.ChallengeUploadResponse;
 import com.Likelion12.fit_mate.entity.Challenge;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.repository.ChallengeRepository;
+import com.Likelion12.fit_mate.repository.UsersRepository;  // 추가
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
-    private final AuthService authService;
+    private final UsersRepository usersRepository;  // 추가
     private final Path fileStorageLocation;
 
     @Autowired
-    public ChallengeService(ChallengeRepository challengeRepository, AuthService authService) {
+    public ChallengeService(ChallengeRepository challengeRepository, UsersRepository usersRepository) {
         this.challengeRepository = challengeRepository;
-        this.authService = authService;
+        this.usersRepository = usersRepository;  // 추가
         this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -39,10 +40,13 @@ public class ChallengeService {
 
     /**
      * 특정 사용자의 챌린지 정보를 가져옵니다.
-     * @param user 사용자의 객체
+     * @param userId 사용자의 ID
      * @return 사용자와 챌린지 세부 정보를 포함한 챌린지 응답
      */
-    public ChallengeResponse getChallengesForUser(Users user) {
+    public ChallengeResponse getChallengesForUser(Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         List<Challenge> challenges = challengeRepository.findByUser(user);
 
         ChallengeResponse response = new ChallengeResponse();
