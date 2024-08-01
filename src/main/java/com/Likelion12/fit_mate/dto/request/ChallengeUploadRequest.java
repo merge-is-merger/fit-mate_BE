@@ -10,4 +10,5 @@ public class ChallengeUploadRequest {
     private Long userId;
     private Long challengeId;
     private MultipartFile photo;
+
 }

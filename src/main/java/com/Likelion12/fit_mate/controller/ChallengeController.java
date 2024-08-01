@@ -7,7 +7,6 @@ import com.Likelion12.fit_mate.service.ChallengeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api")
@@ -31,22 +30,11 @@ public class ChallengeController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * 챌린지에 대한 사진을 업로드하는 엔드포인트입니다.
-     * @param challengeId 챌린지의 ID
-     * @param photo 업로드할 사진 파일
-     * @return 업로드 성공 또는 실패를 나타내는 응답
-     */
+
     @PostMapping("/challenge/upload")
-    public ResponseEntity<ChallengeUploadResponse> uploadChallengePhoto(
-            @RequestParam("challenge_id") Long challengeId,
-            @RequestParam("photo") MultipartFile photo) {
-
-        ChallengeUploadRequest request = new ChallengeUploadRequest();
-        request.setChallengeId(challengeId);
-        request.setPhoto(photo);
-
+    public ResponseEntity<ChallengeUploadResponse> uploadChallengePhoto(@ModelAttribute ChallengeUploadRequest request) {
         ChallengeUploadResponse response = challengeService.uploadChallengePhoto(request);
         return ResponseEntity.ok(response);
     }
+
 }

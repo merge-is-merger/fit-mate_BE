@@ -55,6 +55,10 @@ public class Users {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<UserChallenges> userChallenges = new ArrayList<>();  // 사용자가 참여하는 챌린지 목록
 
+    @Column(name = "count", nullable = false)
+    private int count = 0; // 추가된 count 필드
+
+
     // enum for gender
     public enum Gender {
         MALE, FEMALE, OTHER
