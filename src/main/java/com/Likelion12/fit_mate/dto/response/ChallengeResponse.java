@@ -19,6 +19,7 @@ public class ChallengeResponse {
         private String name;
         private String birthdate;
         private String gender;
+        private int count;
     }
 
     @Getter @Setter

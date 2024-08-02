@@ -53,6 +53,7 @@ public class ChallengeService {
         userDTO.setName(user.getUsername());
         userDTO.setBirthdate(user.getBirthdate().toString());
         userDTO.setGender(user.getGender().name());  // Enum을 문자열로 변환
+        userDTO.setCount((user.getCount()));
 
         ChallengeResponse.ChallengeDTO challengeDTO = new ChallengeResponse.ChallengeDTO();
         challengeDTO.setCount(challenges.size());
