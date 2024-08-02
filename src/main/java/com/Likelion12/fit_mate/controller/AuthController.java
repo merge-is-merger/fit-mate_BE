@@ -83,4 +83,17 @@ public class AuthController {
         }
         return ResponseEntity.ok("Logged out successfully");
     }
+
+    // 세션 상태 확인 엔드포인트
+    @GetMapping("/session/status")
+    public ResponseEntity<String> checkSessionStatus(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            System.out.println("Session is valid for user: " + session.getAttribute("user"));
+            return ResponseEntity.ok("Logged in");
+        } else {
+            System.out.println("No valid session found.");
+            return ResponseEntity.status(401).body("Not logged in");
+        }
+    }
 }
