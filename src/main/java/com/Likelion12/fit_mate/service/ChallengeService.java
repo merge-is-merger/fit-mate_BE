@@ -19,7 +19,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,20 +54,20 @@ public class ChallengeService {
         userDTO.setGender(user.getGender().name());  // Enum을 문자열로 변환
         userDTO.setCount((user.getCount()));
 
-        ChallengeResponse.ChallengeDTO challengeDTO = new ChallengeResponse.ChallengeDTO();
-        challengeDTO.setCount(challenges.size());
-        List<ChallengeResponse.RecordDTO> records = challenges.stream()
-                .map(challenge -> {
-                    ChallengeResponse.RecordDTO recordDTO = new ChallengeResponse.RecordDTO();
-                    recordDTO.setDate(challenge.getDate().toString());
-                    recordDTO.setCompleted(challenge.isCompleted());
-                    return recordDTO;
-                })
-                .collect(Collectors.toList());
-        challengeDTO.setRecords(records);
+//        ChallengeResponse.ChallengeDTO challengeDTO = new ChallengeResponse.ChallengeDTO();
+//        challengeDTO.setCount(challenges.size());
+//        List<ChallengeResponse.RecordDTO> records = challenges.stream()
+//                .map(challenge -> {
+//                    ChallengeResponse.RecordDTO recordDTO = new ChallengeResponse.RecordDTO();
+//                    recordDTO.setDate(challenge.getDate().toString());
+//                    recordDTO.setCompleted(challenge.isCompleted());
+//                    return recordDTO;
+//                })
+//                .collect(Collectors.toList());
+//        challengeDTO.setRecords(records);
 
         response.setUser(userDTO);
-        response.setChallenge(challengeDTO);
+//        response.setChallenge(challengeDTO);
 
         return response;
     }
