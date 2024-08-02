@@ -50,12 +50,19 @@ public class AuthController {
             Users user = authService.login(request);
             System.out.println("User found: " + user.getUsername()); // 추가 로그
 
-            CustomUserDetails customUserDetails = new CustomUserDetails(user);
-            System.out.println("CustomUserDetails created for user: " + customUserDetails.getUsername()); // 추가 로그
+            // 기존 세션 무효화
+            HttpSession oldSession = httpServletRequest.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate();
+                System.out.println("Old session invalidated for user: " + user.getUsername());
+            }
 
-            HttpSession session = httpServletRequest.getSession(true);
-            session.setAttribute("user", customUserDetails);
-            System.out.println("Session attribute set for user: " + customUserDetails.getUsername()); // 추가 로그
+            // 새로운 세션 생성
+            HttpSession newSession = httpServletRequest.getSession(true);
+            CustomUserDetails customUserDetails = new CustomUserDetails(user);
+            newSession.setAttribute("user", customUserDetails);
+            System.out.println("New session created for user: " + customUserDetails.getUsername());
+
 
             return ResponseEntity.ok("Logged in successfully");
         } catch (Exception e) {
@@ -70,6 +77,9 @@ public class AuthController {
         HttpSession session = httpServletRequest.getSession(false);
         if (session != null) {
             session.invalidate(); // 세션 무효화
+            System.out.println("Session invalidated successfully for user.");
+        } else {
+            System.out.println("No session found to invalidate.");
         }
         return ResponseEntity.ok("Logged out successfully");
     }
