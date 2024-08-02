@@ -51,6 +51,8 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setNickname(request.getNickname());
+        user.setBirthdate(request.getBirthdate());
+        user.setGender(request.getGender());
         user.setRegistrationDate(LocalDateTime.now());
         user.setProfileImage("https://fastly.picsum.photos/id/65/4912/3264.jpg?hmac=uq0IxYtPIqRKinGruj45KcPPzxDjQvErcxyS1tn7bG0");
 
