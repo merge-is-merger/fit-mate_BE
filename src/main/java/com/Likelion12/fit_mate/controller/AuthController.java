@@ -9,7 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,10 +30,21 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@ModelAttribute RegisterRequest request) {
         try {
+
+            // 문자열로 받은 birthdate와 gender를 적절한 타입으로 변환
+            LocalDate birthdateConverted = LocalDate.parse(request.getBirthdate().toString());
+            Users.Gender genderConverted = Users.Gender.valueOf(request.getGender().toString().toUpperCase());
+
+            request.setBirthdate(birthdateConverted);
+            request.setGender(genderConverted);
+
             System.out.println("Username: " + request.getUsername());
             System.out.println("Password: " + request.getPassword());
             System.out.println("Confirm Password: " + request.getConfirmPassword());
             System.out.println("Nickname: " + request.getNickname());
+            System.out.println("Converted Birthdate: " + birthdateConverted);
+            System.out.println("Converted Gender: " + genderConverted);
+
             if (request.getProfileImage() != null) {
                 System.out.println("Profile Image: " + request.getProfileImage().getOriginalFilename());
             } else {
