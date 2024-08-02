@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -56,7 +59,7 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest) {
         System.out.println("Login endpoint hit for user: " + request.getUsername()); // 메서드 진입 로그
         try {
             System.out.println("Login attempt for user: " + request.getUsername()); // 추가 로그
@@ -76,13 +79,18 @@ public class AuthController {
             newSession.setAttribute("user", customUserDetails);
             System.out.println("New session created for user: " + customUserDetails.getUsername());
 
+            // 응답 데이터에 사용자 ID 추가
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("message", "Logged in successfully");
+            responseData.put("userId", user.getUserId()); // 사용자 ID 추가
 
-            return ResponseEntity.ok("Logged in successfully");
+            return ResponseEntity.ok(responseData);
         } catch (Exception e) {
             System.out.println("Login failed for user: " + request.getUsername() + ", reason: " + e.getMessage());
-            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body(Collections.singletonMap("message", "Invalid username or password"));
         }
     }
+
 
     // 로그아웃 엔드포인트
     @PostMapping("/logout")

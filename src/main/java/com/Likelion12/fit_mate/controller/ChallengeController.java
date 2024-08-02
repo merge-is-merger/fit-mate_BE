@@ -26,6 +26,7 @@ public class ChallengeController {
      */
     @GetMapping("/challenge")
     public ResponseEntity<ChallengeResponse> getChallenge(@RequestParam Long userId) {
+        System.out.println("Received request for userId: " + userId); // 로그 추가
         ChallengeResponse response = challengeService.getChallengesForUser(userId);
         return ResponseEntity.ok(response);
     }
@@ -33,6 +34,7 @@ public class ChallengeController {
 
     @PostMapping("/challenge/upload")
     public ResponseEntity<ChallengeUploadResponse> uploadChallengePhoto(@ModelAttribute ChallengeUploadRequest request) {
+        System.out.println("Received upload request for challenge"); // 로그 추가
         ChallengeUploadResponse response = challengeService.uploadChallengePhoto(request);
         return ResponseEntity.ok(response);
     }
