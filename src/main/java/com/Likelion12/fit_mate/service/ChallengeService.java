@@ -6,29 +6,33 @@ import com.Likelion12.fit_mate.dto.response.ChallengeUploadResponse;
 import com.Likelion12.fit_mate.entity.Challenge;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.repository.ChallengeRepository;
+import com.Likelion12.fit_mate.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
-    private final AuthService authService;
+    private final UsersRepository usersRepository; // UsersRepository 추가
     private final Path fileStorageLocation;
 
     @Autowired
-    public ChallengeService(ChallengeRepository challengeRepository, AuthService authService) {
+    public ChallengeService(ChallengeRepository challengeRepository, UsersRepository usersRepository) {
         this.challengeRepository = challengeRepository;
-        this.authService = authService;
+        this.usersRepository = usersRepository; // 초기화
         this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);
@@ -37,12 +41,10 @@ public class ChallengeService {
         }
     }
 
-    /**
-     * 특정 사용자의 챌린지 정보를 가져옵니다.
-     * @param user 사용자의 객체
-     * @return 사용자와 챌린지 세부 정보를 포함한 챌린지 응답
-     */
-    public ChallengeResponse getChallengesForUser(Users user) {
+    public ChallengeResponse getChallengesForUser(Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
         List<Challenge> challenges = challengeRepository.findByUser(user);
 
         ChallengeResponse response = new ChallengeResponse();
@@ -70,37 +72,25 @@ public class ChallengeService {
         return response;
     }
 
-    /**
-     * 이번 달의 챌린지를 가져옵니다.
-     * @return 이번 달의 챌린지 리스트
-     */
-    public List<Challenge> getMonthlyChallenges() {
-        LocalDate now = LocalDate.now();
-        LocalDate startOfMonth = now.withDayOfMonth(1);
-        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
-        return challengeRepository.findByDateBetween(startOfMonth, endOfMonth);
-    }
-
-    /**
-     * 특정 챌린지에 대한 사진을 업로드합니다.
-     * @param request 챌린지 ID와 사진 파일을 포함한 요청
-     * @return 업로드 성공 또는 실패를 나타내는 응답
-     */
     public ChallengeUploadResponse uploadChallengePhoto(ChallengeUploadRequest request) {
         try {
             // 챌린지 ID 유효성 검사
             Challenge challenge = challengeRepository.findById(request.getChallengeId())
                     .orElseThrow(() -> new RuntimeException("챌린지를 찾을 수 없습니다."));
 
-            // 파일을 로컬에 저장 (또는 S3 등에 업로드)
-            MultipartFile photo = request.getPhoto();
-            String fileName = request.getChallengeId() + "_" + photo.getOriginalFilename();
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(photo.getInputStream(), targetLocation);
+            // 사용자 ID 유효성 검사
+            Users user = usersRepository.findById(request.getUserId())
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-            // 선택적으로, 챌린지 엔티티에 사진 URL/경로를 포함하도록 업데이트할 수 있습니다.
-            // challenge.setPhotoUrl(fileName);
-            // challengeRepository.save(challenge);
+            // 파일을 로컬에 저장 (덮어쓰기)
+            MultipartFile photo = request.getPhoto();
+            String fileName = request.getChallengeId() + "_" + UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
+            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            Files.copy(photo.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            // 사용자 정보 업데이트 (count 증가)
+            user.setCount(user.getCount() + 1);
+            usersRepository.save(user); // 변경된 사용자 정보 저장
 
             return new ChallengeUploadResponse("success", "챌린지가 성공적으로 인증되었습니다.");
 
