@@ -51,6 +51,8 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setNickname(request.getNickname());
+        user.setBirthdate(request.getBirthdate());
+        user.setGender(request.getGender());
         user.setRegistrationDate(LocalDateTime.now());
         user.setProfileImage("https://fastly.picsum.photos/id/65/4912/3264.jpg?hmac=uq0IxYtPIqRKinGruj45KcPPzxDjQvErcxyS1tn7bG0");
 
@@ -67,11 +69,14 @@ public class AuthService {
         if (user != null && passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             user.setLastLogin(LocalDateTime.now());
             usersRepository.save(user); // Update last login time
+            System.out.println("User logged in: " + user.getUsername()); // 디버깅 로그
             return user;
         } else {
+            System.out.println("Invalid username or password for: " + request.getUsername()); // 디버깅 로그
             throw new RuntimeException("Invalid username or password");
         }
     }
+
 
     private String uploadFile(MultipartFile file) throws IOException {
         String key = UUID.randomUUID() + "_" + file.getOriginalFilename();

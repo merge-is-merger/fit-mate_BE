@@ -24,3 +24,11 @@ cloud:
 
     s3:
       bucket: my-unique-bucket-profile-image
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
+        hibernate: ERROR

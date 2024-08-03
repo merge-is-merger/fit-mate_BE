@@ -1,6 +1,5 @@
 package com.Likelion12.fit_mate.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,20 +11,22 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests
-                .requestMatchers("api/auth/register", "/api/auth/login", "/api/auth/**").permitAll())
-                .getOrBuild();
-    }
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/session/status","/api/auth/register", "/api/auth/login", "/api/auth/logout", "/api/challenge","api/challenge/upload", "/api/routine/my", "/api/routine/save").permitAll()
+                        .anyRequest().authenticated()
+                );
 
+        return http.build();
+    }
 }

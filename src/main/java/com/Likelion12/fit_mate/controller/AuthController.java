@@ -4,10 +4,17 @@ import com.Likelion12.fit_mate.dto.request.LoginRequest;
 import com.Likelion12.fit_mate.dto.request.RegisterRequest;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.service.AuthService;
+import com.Likelion12.fit_mate.service.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,10 +30,21 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@ModelAttribute RegisterRequest request) {
         try {
+
+            // 문자열로 받은 birthdate와 gender를 적절한 타입으로 변환
+            LocalDate birthdateConverted = LocalDate.parse(request.getBirthdate().toString());
+            Users.Gender genderConverted = Users.Gender.valueOf(request.getGender().toString().toUpperCase());
+
+            request.setBirthdate(birthdateConverted);
+            request.setGender(genderConverted);
+
             System.out.println("Username: " + request.getUsername());
             System.out.println("Password: " + request.getPassword());
             System.out.println("Confirm Password: " + request.getConfirmPassword());
             System.out.println("Nickname: " + request.getNickname());
+            System.out.println("Converted Birthdate: " + birthdateConverted);
+            System.out.println("Converted Gender: " + genderConverted);
+
             if (request.getProfileImage() != null) {
                 System.out.println("Profile Image: " + request.getProfileImage().getOriginalFilename());
             } else {
@@ -41,16 +59,38 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<Users> loginUser(@RequestBody LoginRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest) {
+        System.out.println("Login endpoint hit for user: " + request.getUsername()); // 메서드 진입 로그
         try {
+            System.out.println("Login attempt for user: " + request.getUsername()); // 추가 로그
             Users user = authService.login(request);
-            HttpSession session = httpServletRequest.getSession();
-            session.setAttribute("user", user); // 세션에 사용자 정보 저장
-            return ResponseEntity.ok(user);
+            System.out.println("User found: " + user.getUsername()); // 추가 로그
+
+            // 기존 세션 무효화
+            HttpSession oldSession = httpServletRequest.getSession(false);
+            if (oldSession != null) {
+                oldSession.invalidate();
+                System.out.println("Old session invalidated for user: " + user.getUsername());
+            }
+
+            // 새로운 세션 생성
+            HttpSession newSession = httpServletRequest.getSession(true);
+            CustomUserDetails customUserDetails = new CustomUserDetails(user);
+            newSession.setAttribute("user", customUserDetails);
+            System.out.println("New session created for user: " + customUserDetails.getUsername());
+
+            // 응답 데이터에 사용자 ID 추가
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("message", "Logged in successfully");
+            responseData.put("userId", user.getUserId()); // 사용자 ID 추가
+
+            return ResponseEntity.ok(responseData);
         } catch (Exception e) {
-            return ResponseEntity.status(401).body(null);
+            System.out.println("Login failed for user: " + request.getUsername() + ", reason: " + e.getMessage());
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).body(Collections.singletonMap("message", "Invalid username or password"));
         }
     }
+
 
     // 로그아웃 엔드포인트
     @PostMapping("/logout")
@@ -58,7 +98,23 @@ public class AuthController {
         HttpSession session = httpServletRequest.getSession(false);
         if (session != null) {
             session.invalidate(); // 세션 무효화
+            System.out.println("Session invalidated successfully for user.");
+        } else {
+            System.out.println("No session found to invalidate.");
         }
         return ResponseEntity.ok("Logged out successfully");
+    }
+
+    // 세션 상태 확인 엔드포인트
+    @GetMapping("/session/status")
+    public ResponseEntity<String> checkSessionStatus(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("user") != null) {
+            System.out.println("Session is valid for user: " + session.getAttribute("user"));
+            return ResponseEntity.ok("Logged in");
+        } else {
+            System.out.println("No valid session found.");
+            return ResponseEntity.status(401).body("Not logged in");
+        }
     }
 }
