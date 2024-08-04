@@ -41,6 +41,7 @@ dependencies {
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.1'
 
 	implementation 'com.opencsv:opencsv:5.5.2'
+	implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j:1.0.22'
 }
 
 tasks.named('test') {
