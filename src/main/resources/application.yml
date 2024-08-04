@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/fitmate_test_db
-    username: root
-    password: kjh030918!
+    url: ${INSTANCE_CONNECTION_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -13,17 +13,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-cloud:
-  aws:
-    credentials:
-      access-key: AKIA4MTWNPIB4W2LASUF
-      secret-key: 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
-
-    region:
-      static: ap-northeast-2
-
-    s3:
-      bucket: my-unique-bucket-profile-image
 
 logging:
   level:
