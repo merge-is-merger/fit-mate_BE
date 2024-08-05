@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18a2ce12-e3dd-4634-99cb-5559dea959a6" name="변경" comment="" />
+    <list default="true" id="18a2ce12-e3dd-4634-99cb-5559dea959a6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -116,7 +119,7 @@
       <workItem from="1722357258763" duration="1773000" />
       <workItem from="1722648820279" duration="507000" />
       <workItem from="1722822640044" duration="1964000" />
-      <workItem from="1722825067862" duration="737000" />
+      <workItem from="1722825067862" duration="1395000" />
     </task>
     <servers />
   </component>
