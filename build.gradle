@@ -33,15 +33,15 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	implementation 'software.amazon.awssdk:s3:2.20.0'
-	implementation 'software.amazon.awssdk:auth:2.20.0'
-	implementation 'software.amazon.awssdk:regions:2.20.0'
-	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.1'
+//	implementation 'software.amazon.awssdk:s3:2.20.0'
+//	implementation 'software.amazon.awssdk:auth:2.20.0'
+//	implementation 'software.amazon.awssdk:regions:2.20.0'
+//	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.1'
 
 	implementation 'com.opencsv:opencsv:5.5.2'
-	implementation 'com.google.cloud.sql:mysql-socket-factory-connector-j:1.0.22'
 }
 
 tasks.named('test') {
