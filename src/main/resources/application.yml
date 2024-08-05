@@ -10,6 +10,16 @@ spring:
 #    password: j2nny0620*
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA4MTWNPIB4WL2LASUF
+      secret-key: mIbS3t+wOOteizfsvZ0NN/9VezjCyFMk+1H+2Iu3
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: my-unique-bucket-profile-image
+
   jpa:
     hibernate:
       ddl-auto: update
