@@ -86,6 +86,7 @@ public class AuthController {
             sessionCookie.setSecure(true); // HTTPS를 사용하는 경우
             sessionCookie.setPath("/");
             sessionCookie.setDomain("fit-mate-fe.vercel.app");
+            sessionCookie.setAttribute("SameSite","None");
             httpServletResponse.addCookie(sessionCookie);
 
             // 응답 데이터에 사용자 ID 추가
