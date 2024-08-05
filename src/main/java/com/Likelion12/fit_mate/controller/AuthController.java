@@ -5,6 +5,7 @@ import com.Likelion12.fit_mate.dto.request.RegisterRequest;
 import com.Likelion12.fit_mate.entity.Users;
 import com.Likelion12.fit_mate.service.AuthService;
 import com.Likelion12.fit_mate.service.CustomUserDetails;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -59,7 +60,7 @@ public class AuthController {
 
     // 로그인 엔드포인트
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Map<String, Object>> loginUser(@ModelAttribute LoginRequest request, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         System.out.println("Login endpoint hit for user: " + request.getUsername()); // 메서드 진입 로그
         try {
             System.out.println("Login attempt for user: " + request.getUsername()); // 추가 로그
@@ -78,6 +79,14 @@ public class AuthController {
             CustomUserDetails customUserDetails = new CustomUserDetails(user);
             newSession.setAttribute("user", customUserDetails);
             System.out.println("New session created for user: " + customUserDetails.getUsername());
+
+            // 쿠키 설정 추가
+            Cookie sessionCookie = new Cookie("JSESSIONID", newSession.getId());
+            sessionCookie.setHttpOnly(true);
+            sessionCookie.setSecure(true); // HTTPS를 사용하는 경우
+            sessionCookie.setPath("/");
+            sessionCookie.setDomain("fit-mate-fe.vercel.app");
+            httpServletResponse.addCookie(sessionCookie);
 
             // 응답 데이터에 사용자 ID 추가
             Map<String, Object> responseData = new HashMap<>();

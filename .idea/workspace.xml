@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="18a2ce12-e3dd-4634-99cb-5559dea959a6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Likelion12/fit_mate/controller/AuthController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +119,9 @@
       <workItem from="1722357258763" duration="1773000" />
       <workItem from="1722648820279" duration="507000" />
       <workItem from="1722822640044" duration="1964000" />
-      <workItem from="1722825067862" duration="1395000" />
+      <workItem from="1722825067862" duration="2221000" />
+      <workItem from="1722851400345" duration="1393000" />
+      <workItem from="1722867993631" duration="1067000" />
     </task>
     <servers />
   </component>
