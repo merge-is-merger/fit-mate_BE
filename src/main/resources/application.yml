@@ -3,7 +3,7 @@ spring:
     url: ${INSTANCE_CONNECTION_NAME}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/fitmate_test_db
 #    username: root
@@ -16,7 +16,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MariaDBDialect
 
 cloud:
   aws:
