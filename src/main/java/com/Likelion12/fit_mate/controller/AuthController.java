@@ -86,11 +86,18 @@ public class AuthController {
             sessionCookie.setSecure(true); // HTTPS를 사용하는 경우
             sessionCookie.setPath("/");
             sessionCookie.setDomain("fit-mate-fe.vercel.app");
+            sessionCookie.setMaxAge(1800); // 쿠키 만료 시간 설정 (30분)
 //            sessionCookie.setAttribute("SameSite","None");
+
+            // 기본 쿠키 추가
             httpServletResponse.addCookie(sessionCookie);
+
+            // SameSite=None 속성을 설정하는 방법
+//            sessionCookie.setComment("SameSite=None; Secure"); // 주석을 사용하여 SameSite 속성 설정
 
             String sameSiteCookie = String.format("JSESSIONID=%s; Path=/; Secure; HttpOnly; SameSite=None; Domain=fit-mate-fe.vercel.app", newSession.getId());
             httpServletResponse.addHeader("Set-Cookie", sameSiteCookie);
+
             // 응답 데이터에 사용자 ID 추가
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("message", "Logged in successfully");
