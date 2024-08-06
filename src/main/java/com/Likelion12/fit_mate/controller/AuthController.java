@@ -86,9 +86,11 @@ public class AuthController {
             sessionCookie.setSecure(true); // HTTPS를 사용하는 경우
             sessionCookie.setPath("/");
             sessionCookie.setDomain("fit-mate-fe.vercel.app");
-            sessionCookie.setAttribute("SameSite","None");
+//            sessionCookie.setAttribute("SameSite","None");
             httpServletResponse.addCookie(sessionCookie);
 
+            String sameSiteCookie = String.format("JSESSIONID=%s; Path=/; Secure; HttpOnly; SameSite=None; Domain=fit-mate-fe.vercel.app", newSession.getId());
+            httpServletResponse.addHeader("Set-Cookie", sameSiteCookie);
             // 응답 데이터에 사용자 ID 추가
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("message", "Logged in successfully");
